@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kurs Rupiah Real-Time</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    margin-top:50px;
+}
+.card{
+    max-width:400px;
+    margin:auto;
+    padding:20px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+.rate{
+    font-size:32px;
+    font-weight:bold;
+    color:green;
+}
+</style>
+</head>
+<body>
+<div class="card">
+    <h2>Kurs USD ke IDR</h2>
+    <div id="rate" class="rate">Loading...</div>
+    <p id="update"></p>
+</div>
+
+<script>
+async function getRate() {
+    try {
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        const data = await res.json();
+
+        document.getElementById('rate').innerText =
+            'Rp ' + data.rates.IDR.toLocaleString('id-ID');
+
+        document.getElementById('update').innerText =
+            'Update: ' + new Date().toLocaleString('id-ID');
+    } catch(err) {
+        document.getElementById('rate').innerText = 'Gagal mengambil data';
+    }
+}
+
+getRate();
+setInterval(getRate, 60000);
+</script>
+</body>
+</html>
